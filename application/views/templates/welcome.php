@@ -9,7 +9,7 @@
     <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
    
   <!-- js ---------------------------------------------------------------------- -->
-    <script src="<?php echo asset_url(); ?>js/jquery.js"></script>
+    <script src="<?php echo asset_url(); ?>js/jquery.min.js"></script>
     <script src="<?php echo asset_url(); ?>bootstrap/js/bootstrap.min.js"></script>
    
 </head>
