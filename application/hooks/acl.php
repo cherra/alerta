@@ -254,7 +254,7 @@ class acl
         private function check_isvalidated(){
             $permKey = $this->ci->uri->uri_string();
             $permKey = strtolower($permKey);
-            if(! $this->ci->session->userdata('validated')){
+            if(! $this->ci->session->userdata('validado')){
                 return false;
             }else
                 return true;
