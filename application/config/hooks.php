@@ -9,13 +9,14 @@
 |	http://codeigniter.com/user_guide/general/hooks.html
 |
 */
-/*$hook['post_controller_constructor'][] = array(
+$hook['post_controller_constructor'][] = array(
     'class' => 'acl',
     'function' => 'hasPermission',
     'filename' => 'acl.php',
     'filepath' => 'hooks'
 );
 
+/*
 $hook['post_controller_constructor'][] = array(
     'class' => 'Busqueda',
     'function' => 'index',
