@@ -35,6 +35,19 @@
         <span class="glyphicon glyphicon-user"></span> <?php echo $this->session->userdata('nombre'); ?> <?php echo anchor('login/do_logout','(Salir)','class="navbar-link"'); ?>
     </p>
     <ul class="nav navbar-nav">
+    <?php
+        // Se obtienen los folders de los métodos para mostrarlos en la barra superior.
+        $folders = $this->menu->get_folders();
+        foreach($folders as $folder){ ?>
+        <li <?php 
+        // Si el primer segmento del URI es igual al folder quiere decir que es la opción seleccionada
+        // y se marca como activa para resaltarla
+        if( $this->uri->segment(1) == $folder->folder){
+            echo 'class="active"'; 
+        }
+        ?>><?php 
+        echo anchor($folder->folder.'/'.$folder->folder, ucfirst(strtolower($folder->folder)), 'class="navbar-link"'); ?></li>
+        <?php } ?>
       <li><a href="#">Dashboard</a></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuarios<b class="caret"></b></a>
