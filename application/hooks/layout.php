@@ -37,7 +37,7 @@ class Layout
         */
         if ( !$this->CI->input->is_ajax_request() ) {     
             // this is the default layout, use as fallback
-            $default = APPPATH . 'views/templates/template_backend.php';
+            $default = APPPATH . 'views/templates/default.php';
             $layout = '';
             
             if (file_exists($requested)) {
