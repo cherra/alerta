@@ -201,54 +201,56 @@ class acl
                 $permKey .= $method != "index" ? "/".$method : "";
                 $permKey = strtolower($permKey);
                 
-                if($this->check_isvalidated()){ // Si ya esta iniciada la sesión
-                    if(!$this->ci->input->is_ajax_request() && $class != "ajax"){
-                        if($class == 'login' && $method == 'index')
-                            redirect('home');
+                if($folder != "ws/"){  // Si la petición es por Web Service no se valida al usuario
+                    if($this->check_isvalidated()){ // Si ya esta iniciada la sesión
+                        if(!$this->ci->input->is_ajax_request() && $class != "ajax"){
+                            if($class == 'login' && $method == 'index')
+                                redirect('home');
 
-                        // Todos los usuario tienen acceso al home y a hacer logout
-                        if(($class == 'home' && $method == 'index') or ($class == 'login' && $method == 'do_logout') )
-                            return false;
-                            
-                        if($this->ci->session->userdata('userid')){
-                            /*
-                            *  Si el permiso no está dado de alta en la base de datos, verifica que el método llamado existe,
-                            * y lo da de alta en la tabla perm_data.
-                            */
-                            $roles = $this->getAllPerms('full');
-                            if(!array_key_exists($permKey, $roles)){
-                                if(method_exists($this->ci, $method)){
-                                    if(is_callable(array($this->ci,$method))){
-                                        $this->setPerm($permKey);
+                            // Todos los usuario tienen acceso al home y a hacer logout
+                            if(($class == 'home' && $method == 'index') or ($class == 'login' && $method == 'do_logout') )
+                                return false;
+
+                            if($this->ci->session->userdata('userid')){
+                                /*
+                                *  Si el permiso no está dado de alta en la base de datos, verifica que el método llamado existe,
+                                * y lo da de alta en la tabla perm_data.
+                                */
+                                $roles = $this->getAllPerms('full');
+                                if(!array_key_exists($permKey, $roles)){
+                                    if(method_exists($this->ci, $method)){
+                                        if(is_callable(array($this->ci,$method))){
+                                            $this->setPerm($permKey);
+                                        }
                                     }
                                 }
-                            }
-                            
-                            // Si el sistema está en modo desarrollador se tiene acceso a todo
-                            if($this->ci->config->item('developer_mode') == 1)
-                                return false;
-                            
-                            $this->userID = floatval($this->ci->session->userdata('userid'));
-                            $this->userRoles = $this->getUserRoles();
-                            $this->buildACL();
 
-                            if (array_key_exists($permKey,$this->perms))
-                            {
-                                    if ($this->perms[$permKey]['valor'] === '1' || $this->perms[$permKey]['valor'] === true)
-                                    {
-                                        $this->ci->load->vars(array('title' => $this->perms[$permKey]['name']));
-                                        return true;
-                                    } else {
-                                        redirect('home');
-                                    }
-                            } else {
+                                // Si el sistema está en modo desarrollador se tiene acceso a todo
+                                if($this->ci->config->item('developer_mode') == 1)
+                                    return false;
+
+                                $this->userID = floatval($this->ci->session->userdata('userid'));
+                                $this->userRoles = $this->getUserRoles();
+                                $this->buildACL();
+
+                                if (array_key_exists($permKey,$this->perms))
+                                {
+                                        if ($this->perms[$permKey]['valor'] === '1' || $this->perms[$permKey]['valor'] === true)
+                                        {
+                                            $this->ci->load->vars(array('title' => $this->perms[$permKey]['name']));
+                                            return true;
+                                        } else {
+                                            redirect('home');
+                                        }
+                                } else {
+                                    redirect('home');
+                                }
+                            }else
                                 redirect('home');
-                            }
-                        }else
-                            redirect('home');
-                    }
-                }elseif($permKey != strstr($permKey,'login'))
-                    redirect('login');
+                        }
+                    }elseif($permKey != strstr($permKey,'login'))
+                        redirect('login');
+                }
 	}
         
         private function check_isvalidated(){
