@@ -56,6 +56,7 @@ class Incidente extends CI_Model {
     function get_menu_by_categoria($id){
         $this->db->where('id_categoria', $id);
         $this->db->where('menu','1');
+        $this->db->order_by('nombre');
         return $this->db->get($this->tbl);
     }
     
