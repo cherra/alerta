@@ -57,18 +57,28 @@ class App extends CI_Controller {
     public function insert_reporte(){
         if( ($reporte = $this->input->get()) ){
             $this->load->model('reporte','r');
+            $this->load->model('evento','e');
             $this->load->library('uuid');
-            $datos['id'] = $this->uuid->v4();
-            $datos['id_persona'] = $reporte['id_persona'];
-            $datos['id_tipo'] = $reporte['id_tipo'];
-            $datos['mensaje'] = $reporte['mensaje'];
-            //$datos['id_persona'] = $reporte['id_persona'];
-            if( $this->r->save($datos) ){
-                $resultado['id'] = $datos['id'];
-                $resultado['mensaje'] = "ok";
-            }else{
-                $resultado['mensaje'] = 'error';
+            
+            $this->db->trans_start();
+            $evento['folio'] = rand();  // Generamos un folio aleatorio (para pruebas)
+            $evento['id'] = $this->uuid->v4();
+            if( $this->e->save($evento) > 0 ){  // Se graba el evento
+                $datos['id_evento'] = $evento['id'];
+                $datos['id_tipo'] = $reporte['id_tipo'];
+                if( $this->e->save_tipo($datos) ){  // Se graba el tipo de evento reportado por el usuario
+                    $datos['id'] = $this->uuid->v4();
+                    $datos['id_persona'] = $reporte['id_persona'];
+                    $datos['mensaje'] = $reporte['mensaje'];
+                    if( $this->r->save($datos) ){  // Se genera el reporte del usuario
+                        $resultado['id_evento'] = $datos['id_evento'];
+                        $resultado['mensaje'] = "ok";
+                    }else{
+                        $resultado['mensaje'] = 'error';
+                    }
+                }
             }
+            $this->db->trans_complete();
             if(isset($reporte['callback'])){
                 $this->output->set_content_type('text/javascript')->set_output($reporte['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
             }else{
