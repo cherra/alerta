@@ -17,7 +17,7 @@ class App extends CI_Controller {
     public function get_categorias(){
         if( ($datos = $this->input->get()) ){
             $this->load->model('categoria','c');
-            $categorias = $this->c->get_all();
+            $categorias = $this->c->get_menu();
             if($categorias->num_rows() > 0){
                 $resultado = $categorias->result_array();
                 if(isset($datos['callback'])){
@@ -79,6 +79,31 @@ class App extends CI_Controller {
                 }
             }
             $this->db->trans_complete();
+            if(isset($reporte['callback'])){
+                $this->output->set_content_type('text/javascript')->set_output($reporte['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
+            }else{
+                echo json_encode($resultado, JSON_FORCE_OBJECT);
+            }
+        }else{
+            return json_encode(false);
+        }
+    }
+    
+    public function add_reporte(){
+        if( ($reporte = $this->input->get()) ){
+            $this->load->model('reporte','r');
+            //$this->load->model('evento','e');
+            $this->load->library('uuid');
+            
+            //$evento = $this->e->get_by_id($reporte['id_evento'])->row();
+            //$reporte['id_tipo'] = $evento->id_tipo;
+            $reporte['id'] = $this->uuid->v4();
+            if( $this->r->save($reporte) ){  // Se genera el reporte del usuario
+                //$resultado['id_evento'] = $reporte['id_evento'];
+                $resultado['mensaje'] = "ok";
+            }else{
+                $resultado['mensaje'] = 'error';
+            }
             if(isset($reporte['callback'])){
                 $this->output->set_content_type('text/javascript')->set_output($reporte['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
             }else{
