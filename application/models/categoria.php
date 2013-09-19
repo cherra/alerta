@@ -45,6 +45,12 @@ class Categoria extends CI_Model {
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
+    function get_menu(){
+        $this->db->where('menu','1');
+        $this->db->order_by('orden','asc');
+        return $this->db->get($this->tbl);
+    }
+    
     /**
     * Obtener por id
     */
