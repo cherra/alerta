@@ -102,10 +102,35 @@ class App extends CI_Controller {
                 //$resultado['id_evento'] = $reporte['id_evento'];
                 $resultado['mensaje'] = "ok";
             }else{
-                $resultado['mensaje'] = 'error';
+                $resultado['mensaje'] = 'Error: ';
             }
             if(isset($reporte['callback'])){
                 $this->output->set_content_type('text/javascript')->set_output($reporte['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
+            }else{
+                echo json_encode($resultado, JSON_FORCE_OBJECT);
+            }
+        }else{
+            return json_encode(false);
+        }
+    }
+    
+    public function add_media(){
+        if( ($media = $this->input->get()) ){
+            $this->load->model('media','m');
+            //$this->load->model('evento','e');
+            $this->load->library('uuid');
+            
+            //$evento = $this->e->get_by_id($reporte['id_evento'])->row();
+            //$reporte['id_tipo'] = $evento->id_tipo;
+            $media['id'] = $this->uuid->v4();
+            if( $this->m->save($media) ){  // Se genera el reporte del usuario
+                //$resultado['id_evento'] = $reporte['id_evento'];
+                $resultado['mensaje'] = "ok";
+            }else{
+                $resultado['mensaje'] = 'error: '.$this->db->last_query();
+            }
+            if(isset($media['callback'])){
+                $this->output->set_content_type('text/javascript')->set_output($media['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
             }else{
                 echo json_encode($resultado, JSON_FORCE_OBJECT);
             }
