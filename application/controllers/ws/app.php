@@ -116,7 +116,7 @@ class App extends CI_Controller {
     }
     
     public function add_media(){
-        if( ($media = $this->input->get()) ){
+        if( ($media = $this->input->get()) or ($media = $this->input->post()) ){
             $this->load->model('media','m');
             //$this->load->model('evento','e');
             $this->load->library('uuid');
@@ -127,6 +127,7 @@ class App extends CI_Controller {
             if( $this->m->save($media) ){  // Se genera el reporte del usuario
                 //$resultado['id_evento'] = $reporte['id_evento'];
                 $resultado['mensaje'] = "ok";
+                $resultado['hora'] = date('d/m/Y H:i');
             }else{
                 $resultado['mensaje'] = 'error: '.$this->db->last_query();
             }
