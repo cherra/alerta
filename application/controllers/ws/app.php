@@ -101,6 +101,7 @@ class App extends CI_Controller {
             if( $this->r->save($reporte) ){  // Se genera el reporte del usuario
                 //$resultado['id_evento'] = $reporte['id_evento'];
                 $resultado['mensaje'] = "ok";
+                $resultado['hora'] = date('d/m/Y H:i');
             }else{
                 $resultado['mensaje'] = 'Error: ';
             }
@@ -135,7 +136,7 @@ class App extends CI_Controller {
                 echo json_encode($resultado, JSON_FORCE_OBJECT);
             }
         }else{
-            return json_encode(false);
+            echo json_encode(false);
         }
     }
     
