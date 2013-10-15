@@ -175,7 +175,7 @@ class App extends CI_Controller {
                     $resultado['mensaje'] = 'Bien';
                 }else{
                     $resultado['validacion'] = 'error';
-                $resultado['mensaje'] = 'Error al actualizar token';
+                    $resultado['mensaje'] = 'Error al actualizar token\nid_persona:'.$datos['id_persona'].'\ntoken: '.$datos['token'];
                 }
             }else{
                 $resultado['validacion'] = 'error';
