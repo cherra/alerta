@@ -75,6 +75,7 @@ class Persona extends CI_Model {
     function update($id, $datos) {
         $this->db->where('id', $id);
         $this->db->update($this->tbl, $datos);
+        return $this->db->affected_rows();
     }
 
     /**

@@ -165,5 +165,29 @@ class App extends CI_Controller {
         }else
             echo json_encode(false);
     }
+    
+    public function update_token(){
+        $this->load->model('persona','p');
+        if( ($datos = $this->input->get()) ){
+            if( isset($datos['token']) && isset($datos['id_persona']) ){
+                if( $this->p->update($datos['id_persona'], array('apn_token' => $datos['token'])) ){
+                    $resultado['validacion'] = 'ok';
+                    $resultado['mensaje'] = 'Bien';
+                }else{
+                    $resultado['validacion'] = 'error';
+                $resultado['mensaje'] = 'Error al actualizar token';
+                }
+            }else{
+                $resultado['validacion'] = 'error';
+                $resultado['mensaje'] = 'Datos incorrectos';
+            }
+            if(isset($datos['callback'])){
+                $this->output->set_content_type('text/javascript')->set_output($datos['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
+            }else{
+                echo json_encode($resultado, JSON_FORCE_OBJECT);
+            }
+        }else
+            echo json_encode(false);
+    }
 }
 ?>
