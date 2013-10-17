@@ -53,34 +53,37 @@ class Personas extends CI_Controller {
                     $d->municipio,
                     $d->celular,
                     $d->email,
-                    anchor($this->folder.$this->clase.'push/' . $d->id, 'Push')
+                    anchor('#pushModal', 'Push', array('class' => 'btn btn-default', 'data-toggle' => 'modal', 'id_persona' => $d->id))
             );
     	}
     	$data['table'] = $this->table->generate();
+        $data['action_push'] = $this->folder.$this->clase.'push';
     	// Cargar vista
-    	$this->load->view('lista', $data);
+    	$this->load->view('personas/lista', $data);
     }
     
-    public function push($id_persona) {
-        $this->load->model('persona','p');
-        
-    	$data['titulo'] = 'Personas <small>Enviar push notification</small>';
-    	$data['link_back'] = $this->folder.$this->clase.'lista';
-    
-    	$data['action'] = $this->folder.$this->clase.'push';
-        $persona = $this->p->get_by_id($id_persona)->row();
-        if($persona){
-    	//if ( ($datos = $this->input->post()) ) {
-            $this->load->library('apn');
-            if( ($this->apn->push($persona->apn_token, 'chat', 'Push de prueba', '1')) ){
-                $this->session->set_flashdata('mensaje',$this->config->item('create_success'));
-                redirect($this->folder.$this->clase.'lista');
-            }else{
-                $this->session->set_flashdata('mensaje',$this->config->item('error'));
-                redirect($this->folder.$this->clase.'lista');
+    public function push() {
+        if( ($datos = $this->input->post()) ){
+            $this->load->model('persona','p');
+
+            $data['titulo'] = 'Personas <small>Enviar push notification</small>';
+            $data['link_back'] = $this->folder.$this->clase.'lista';
+
+            $data['action'] = $this->folder.$this->clase.'push';
+            $persona = $this->p->get_by_id($datos['id_persona'])->row();
+            if($persona){
+            //if ( ($datos = $this->input->post()) ) {
+                $this->load->library('apn');
+                if( ($this->apn->push($persona->apn_token, 'chat', $datos['mensaje'], '1')) ){
+                    $this->session->set_flashdata('mensaje',$this->config->item('create_success'));
+                    redirect($this->folder.$this->clase.'lista');
+                }else{
+                    $this->session->set_flashdata('mensaje',$this->config->item('error'));
+                    redirect($this->folder.$this->clase.'lista');
+                }
+                    //$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
             }
-    		//$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
-    	}
+        }
         
         //$this->load->view('catalogos/productos/formulario', $data);
 
