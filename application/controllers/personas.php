@@ -84,6 +84,8 @@ class Personas extends CI_Controller {
         
         echo "Pruebas";
         //$this->load->view('catalogos/productos/formulario', $data);
+
+	echo "Otra linea";
     }
 }
 ?>
