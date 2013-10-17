@@ -82,11 +82,8 @@ class Personas extends CI_Controller {
     		//$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
     	}
         
-        echo "Pruebas";
-        // Linea de prueba desde lap
         //$this->load->view('catalogos/productos/formulario', $data);
 
-	echo "Otra linea";
     }
 }
 ?>
