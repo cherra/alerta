@@ -83,6 +83,7 @@ class Personas extends CI_Controller {
     	}
         
         echo "Pruebas";
+        // Linea de prueba desde lap
         //$this->load->view('catalogos/productos/formulario', $data);
     }
 }
