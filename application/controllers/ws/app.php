@@ -100,10 +100,12 @@ class App extends CI_Controller {
             $reporte['id'] = $this->uuid->v4();
             if( $this->r->save($reporte) ){  // Se genera el reporte del usuario
                 //$resultado['id_evento'] = $reporte['id_evento'];
-                $resultado['mensaje'] = "ok";
+                $resultado['resultado'] = "ok";
+                $resultado['mensaje'] = "Reporte recibido, lo estamos atendiendo.";
                 $resultado['hora'] = date('d/m/Y H:i');
             }else{
-                $resultado['mensaje'] = 'Error: ';
+                $resultado['resultado'] = 'Error';
+                $resultado['mensaje'] = $this->db->last_query();
             }
             if(isset($reporte['callback'])){
                 $this->output->set_content_type('text/javascript')->set_output($reporte['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
@@ -126,10 +128,12 @@ class App extends CI_Controller {
             $media['id'] = $this->uuid->v4();
             if( $this->m->save($media) ){  // Se genera el reporte del usuario
                 //$resultado['id_evento'] = $reporte['id_evento'];
-                $resultado['mensaje'] = "ok";
+                $resultado['resultado'] = "ok";
+                $resultado['mensaje'] = "Información recibida, gracias.";
                 $resultado['hora'] = date('d/m/Y H:i');
             }else{
-                $resultado['mensaje'] = 'error: '.$this->db->last_query();
+                $resultado['resultado'] = 'Error';
+                $resultado['mensaje'] = $this->db->last_query();
             }
             if(isset($media['callback'])){
                 $this->output->set_content_type('text/javascript')->set_output($media['callback'].'('.json_encode($resultado, JSON_FORCE_OBJECT).')');
@@ -171,14 +175,14 @@ class App extends CI_Controller {
         if( ($datos = $this->input->get()) ){
             if( isset($datos['token']) && isset($datos['id_persona']) ){
                 if( $this->p->update($datos['id_persona'], array('apn_token' => $datos['token'])) ){
-                    $resultado['validacion'] = 'ok';
-                    $resultado['mensaje'] = 'Bien';
+                    $resultado['resultado'] = 'ok';
+                    $resultado['mensaje'] = 'Token actualizado';
                 }else{
-                    $resultado['validacion'] = 'error';
+                    $resultado['resultado'] = 'error';
                     $resultado['mensaje'] = 'Error al actualizar token\nid_persona:'.$datos['id_persona'].'\ntoken: '.$datos['token'];
                 }
             }else{
-                $resultado['validacion'] = 'error';
+                $resultado['resultado'] = 'error';
                 $resultado['mensaje'] = 'Datos incorrectos';
             }
             if(isset($datos['callback'])){
