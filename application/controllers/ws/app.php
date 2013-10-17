@@ -150,7 +150,7 @@ class App extends CI_Controller {
         if( ($datos = $this->input->get()) ){
             $login = $this->p->valida($datos['email'], $datos['password'])->row();
             if( $login ){
-                $resultado['validacion'] = 'ok';
+                $resultado['resultado'] = 'ok';
                 $resultado['mensaje'] = 'Bien';
                 $resultado['hora'] = date_create();
                 //$resultado['token'] = $login->token;
@@ -158,7 +158,7 @@ class App extends CI_Controller {
                 $resultado['generador'] = "Matica";
                 $resultado['id_persona'] = $login->id;
             }else{
-                $resultado['validacion'] = 'error';
+                $resultado['resultado'] = 'error';
                 $resultado['mensaje'] = 'Datos incorrectos';
             }
             if(isset($datos['callback'])){
