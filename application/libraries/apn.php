@@ -17,7 +17,7 @@ class Apn {
         $passphrase = 'cherra3003';
         
         $this->ctx = stream_context_create();
-        stream_context_set_option($this->ctx, 'ssl', 'local_cert', 'apns-dist.pem');
+        stream_context_set_option($this->ctx, 'ssl', 'local_cert', asset_url().'certificados/apns-dist.pem');
         stream_context_set_option($this->ctx, 'ssl', 'passphrase', $passphrase);
 
         // Open a connection to the APNS server
