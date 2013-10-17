@@ -53,11 +53,11 @@ class Personas extends CI_Controller {
                     $d->municipio,
                     $d->celular,
                     $d->email,
-                    anchor($this->folder.$this->clase.'push/' . $d->apn_token, 'Push')
+                    anchor($this->folder.$this->clase.'push/' . $d->id, 'Push')
             );
     	}
     	$data['table'] = $this->table->generate();
-    	
+    	// Cargar vista
     	$this->load->view('lista', $data);
     }
     
@@ -69,9 +69,10 @@ class Personas extends CI_Controller {
     
     	$data['action'] = $this->folder.$this->clase.'push';
         $persona = $this->p->get_by_id($id_persona)->row();
+        if($persona){
     	//if ( ($datos = $this->input->post()) ) {
             $this->load->library('apn');
-            if( ($this->apn->push($persona->apn_token, 'chat', 'Push de prueba', '0')) ){
+            if( ($this->apn->push($persona->apn_token, 'chat', 'Push de prueba', '1')) ){
                 $this->session->set_flashdata('mensaje',$this->config->item('create_success'));
                 redirect($this->folder.$this->clase.'lista');
             }else{
@@ -79,7 +80,7 @@ class Personas extends CI_Controller {
                 redirect($this->folder.$this->clase.'lista');
             }
     		//$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
-    	//}
+    	}
         //$this->load->view('catalogos/productos/formulario', $data);
     }
 }
