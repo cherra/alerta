@@ -76,7 +76,11 @@ class App extends CI_Controller {
                     }else{
                         $resultado['mensaje'] = 'error';
                     }
+                }else{
+                    $resultado['mensaje'] = 'error';
                 }
+            }else{
+                $resultado['mensaje'] = 'error';
             }
             $this->db->trans_complete();
             if(isset($reporte['callback'])){
