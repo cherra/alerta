@@ -53,10 +53,10 @@ class Persona extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
-    function valida($email, $password){
-        if(!empty($email) && !empty($password)){
-            $this->db->where('email', $email);
-            $this->db->where('password', $password);
+    function valida($id, $celular){
+        if(!empty($id) && !empty($celular)){
+            $this->db->where('id', $id);
+            $this->db->where('celular', $celular);
             return $this->db->get($this->tbl);
         }
     }

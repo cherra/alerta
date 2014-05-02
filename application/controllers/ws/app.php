@@ -152,7 +152,7 @@ class App extends CI_Controller {
     public function login(){
         $this->load->model('persona','p');
         if( ($datos = $this->input->get()) ){
-            $login = $this->p->valida($datos['email'], $datos['password'])->row();
+            $login = $this->p->valida($datos['id'], $datos['celular'])->row();
             if( $login ){
                 $resultado['resultado'] = 'ok';
                 $resultado['mensaje'] = 'Bien';
