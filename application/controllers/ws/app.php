@@ -72,15 +72,15 @@ class App extends CI_Controller {
                     $datos['mensaje'] = $reporte['mensaje'];
                     if( $this->r->save($datos) ){  // Se genera el reporte del usuario
                         $resultado['id_evento'] = $datos['id_evento'];
-                        $resultado['mensaje'] = "ok";
+                        $resultado['resultado'] = "ok";
                     }else{
-                        $resultado['mensaje'] = 'error';
+                        $resultado['resultado'] = 'error';
                     }
                 }else{
-                    $resultado['mensaje'] = 'error';
+                    $resultado['resultado'] = 'error';
                 }
             }else{
-                $resultado['mensaje'] = 'error';
+                $resultado['resultado'] = 'error';
             }
             $this->db->trans_complete();
             if(isset($reporte['callback'])){
